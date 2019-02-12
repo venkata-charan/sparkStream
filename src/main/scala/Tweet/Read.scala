@@ -31,6 +31,8 @@ object Read extends  App {
   val tweets = TwitterUtils.createStream(ssc,Some(auth))
   val english_tweets = tweets.filter(_.getLang() == "en")
 
+  english_tweets.print(20)
+
   ssc.start()
   ssc.awaitTerminationOrTimeout(30000)
 

@@ -32,13 +32,17 @@ object SaveTweets extends App {
 
 
   val tweets = TwitterUtils.createStream(ssc,Some(auth))
-  val english_tweets = tweets.filter(_.getLang() == "en")
-  val statuses = english_tweets.map(status => status.getText())
+ // val english_tweets = tweets.filter(_.getLang() == "en")
+  val statuses = tweets.map(status => status.getText())
 
+   statuses.print(1)
   var TotalTweets:Long = 0
-  println(" --------------------- setup done, lets save it -------------------------" )
+
+  println(" --------------------- setup done, lets save it ------------------------- and count is " + statuses.count() )
+
   statuses.foreachRDD((rdd,time)=>{
     // don't bother empty Rdd, only consider actual rdd's
+    println("hello i am here")
     if (rdd.count() > 0){
 
       val repart_Rdd = rdd.repartition(1).cache()

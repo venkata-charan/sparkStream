@@ -1,11 +1,7 @@
 package Tweet
 
 
-import org.apache.spark.SparkConf
-import org.apache.spark.streaming.{Seconds, StreamingContext}
-import org.apache.spark.streaming.twitter.TwitterUtils
-import twitter4j.auth.OAuthAuthorization
-import twitter4j.conf.ConfigurationBuilder
+
 
 object SaveTweets extends App {
 
@@ -34,7 +30,7 @@ object SaveTweets extends App {
     }
   })
 
-  ssc.start()
-  ssc.awaitTermination()
+  SetUpTwitter.ssc.start()
+  SetUpTwitter.ssc.awaitTermination()
 
 }

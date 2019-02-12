@@ -31,7 +31,8 @@ object Read extends  App {
   val tweets = TwitterUtils.createStream(ssc,Some(auth))
   val english_tweets = tweets.filter(_.getLang() == "en")
 
-  english_tweets.print(20)
+  english_tweets.print(1)
+  english_tweets.foreachRDD(_.saveAsTextFile("hdfs:///user/charanrajlv3971/tweets/"))
 
   ssc.start()
   ssc.awaitTerminationOrTimeout(30000)

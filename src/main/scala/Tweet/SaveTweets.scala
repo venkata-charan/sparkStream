@@ -1,5 +1,6 @@
 package Tweet
 
+
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.streaming.twitter.TwitterUtils
@@ -42,7 +43,6 @@ object SaveTweets extends App {
 
   statuses.foreachRDD((rdd,time)=>{
     // don't bother empty Rdd, only consider actual rdd's
-    println("hello i am here")
     if (rdd.count() > 0){
 
       val repart_Rdd = rdd.repartition(1).cache()
@@ -56,4 +56,8 @@ object SaveTweets extends App {
 
     }
   })
+
+  ssc.start()
+  ssc.awaitTermination()
+
 }

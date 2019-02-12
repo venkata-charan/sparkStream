@@ -18,6 +18,9 @@ object Read extends  App {
   val conf = new SparkConf()
   conf.setAppName(appName).setMaster("local[2]")
   val ssc = new StreamingContext(conf,Seconds(5))
+  val sc = ssc.sparkContext
+  sc.setLogLevel("ERROR")
+
   val cb = new ConfigurationBuilder
 
   cb.setDebugEnabled(true).setOAuthConsumerKey(consumerKey)
@@ -35,6 +38,6 @@ object Read extends  App {
   english_tweets.foreachRDD(_.saveAsTextFile("hdfs:///user/charanrajlv3971/tweets/"))
 
   ssc.start()
-  ssc.awaitTerminationOrTimeout(30000)
+  ssc.awaitTerminationOrTimeout(10000)
 
 }

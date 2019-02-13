@@ -34,6 +34,7 @@ object LogParser extends App {
   //print top 10
   urlsCount.print()
 
+  ssc.checkpoint("hdfs:///user/charanrajlv3971/checkpoint/")
   ssc.start()
   ssc.awaitTermination()
 

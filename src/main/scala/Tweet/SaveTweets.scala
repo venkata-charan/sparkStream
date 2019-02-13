@@ -3,7 +3,7 @@ package Tweet
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.twitter.TwitterUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
-
+import SetUpTwitter.set
 
 object SaveTweets extends App {
 
@@ -13,7 +13,8 @@ object SaveTweets extends App {
   val sc = ssc.sparkContext
   sc.setLogLevel("ERROR")
   conf.setAppName("SaveTweets").setMaster("local[2]")
-  val tweets = TwitterUtils.createStream(ssc,Some(SetUpTwitter.getAuth))
+  set()
+  val tweets = TwitterUtils.createStream(ssc,None)
   //---- set up of twitter stream object completed
 
   val hindi_tweets = tweets.filter(_.getLang() == "hi")

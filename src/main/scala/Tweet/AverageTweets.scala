@@ -2,6 +2,7 @@ package Tweet
 
 import java.util.concurrent.atomic.AtomicLong
 
+import Tweet.Read.ssc
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.streaming.twitter.TwitterUtils
@@ -57,6 +58,8 @@ object AverageTweets extends App {
   }
   )
 
+  ssc.start()
+  ssc.awaitTerminationOrTimeout(30000)
 
 
 

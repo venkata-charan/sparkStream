@@ -1,15 +1,23 @@
 package Tweet
 
-
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming.twitter.TwitterUtils
+import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 
 object SaveTweets extends App {
 
   println(" --------------------- lets start app -------------------------" )
+  val conf = new SparkConf()
+  val ssc = new StreamingContext(conf,Seconds(5))
+  val sc = ssc.sparkContext
+  sc.setLogLevel("ERROR")
+  conf.setAppName("SaveTweets").setMaster("local[2]")
+  val tweets = TwitterUtils.createStream(ssc,Some(SetUpTwitter.getAuth))
+  //---- set up of twitter stream object completed
 
-  val tweets = SetUpTwitter.getTweetSetup("SaveTweets")
-  val hindi_tweets = tweets.filter(_.getLang() == "hi")
-  val statuses = hindi_tweets.map(status => status.getText())
+  val hindi_tweets = tweets.filter(_.getLang == "hi")
+  val statuses = hindi_tweets.map(status => status.getText)
   var TotalTweets:Long = 0
 
   println(" --------------------- setup done, lets save it ------------------------- " )
@@ -30,7 +38,7 @@ object SaveTweets extends App {
     }
   })
 
-  SetUpTwitter.ssc.start()
-  SetUpTwitter.ssc.awaitTermination()
+  ssc.start()
+  ssc.awaitTermination()
 
 }

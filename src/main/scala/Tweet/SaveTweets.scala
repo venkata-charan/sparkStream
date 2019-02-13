@@ -16,8 +16,8 @@ object SaveTweets extends App {
   val tweets = TwitterUtils.createStream(ssc,Some(SetUpTwitter.getAuth))
   //---- set up of twitter stream object completed
 
-  val hindi_tweets = tweets.filter(_.getLang == "hi")
-  val statuses = hindi_tweets.map(status => status.getText)
+  val hindi_tweets = tweets.filter(_.getLang() == "hi")
+  val statuses = hindi_tweets.map(status => status.getText())
   var TotalTweets:Long = 0
 
   println(" --------------------- setup done, lets save it ------------------------- " )

@@ -47,7 +47,6 @@ object StrucStream extends App {
   structuredData.createOrReplaceTempView("test")
   val query = spark.sql("Select * from test")
     .writeStream
-    .outputMode("complete")
     .format("console")
     .start()
   query.awaitTermination()

@@ -27,9 +27,10 @@ object StrucStream extends App {
   import spark.implicits._
 
   val structuredData = inputStream.flatMap (x => {
-    println("something i am doing in step 1")
+
     val matcher:Matcher = logPattern.matcher(x.getString(0))
     if (matcher.matches()){
+      println("matched")
       Some(LogEntry(
         matcher.group(1),
         matcher.group(2),
@@ -39,7 +40,10 @@ object StrucStream extends App {
         matcher.group(6),
         matcher.group(7),
         matcher.group(8)))}
-    else None
+    else {
+      println("sorry not matched")
+      None
+    }
   }).toDF().select($"status",
     unix_timestamp($"dateTime", "dd/MMM/YYYY:HH:mm:ss").cast(TimestampType).as("date")
   )

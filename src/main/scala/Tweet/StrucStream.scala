@@ -6,8 +6,6 @@ import org.apache.spark.sql.{Row, SparkSession}
 import LogRegex.apache2LogPatter
 import org.apache.spark.sql.types.TimestampType
 import org.apache.spark.sql.functions.unix_timestamp
-import org.apache.spark.streaming.{Minutes, StreamingContext}
-
 
 
 object StrucStream extends App {
@@ -47,13 +45,13 @@ object StrucStream extends App {
   )
 
   structuredData.createOrReplaceTempView("test")
+  val query = spark.sql("Select * from test")
+    .writeStream
+    .outputMode("complete")
+    .format("console")
+    .start()
+  query.awaitTermination()
 
-  spark.sql("Select * from test").show()
-
-  val ssc = new StreamingContext(spark.sparkContext, Minutes(2))
-
-  ssc.start()
-  ssc.awaitTermination()
 
 }
 

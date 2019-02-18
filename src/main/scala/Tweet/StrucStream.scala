@@ -29,6 +29,7 @@ object StrucStream extends App {
   import spark.implicits._
 
   val structuredData = inputStream.flatMap (x => {
+    println("something i am doing in step 1")
     val matcher:Matcher = logPattern.matcher(x.getString(0))
     if (matcher.matches()){
       Some(LogEntry(
@@ -45,8 +46,9 @@ object StrucStream extends App {
     unix_timestamp($"dateTime", "dd/MMM/YYYY:HH:mm:ss").cast(TimestampType).as("date")
   )
 
-  structuredData.createOrReplaceGlobalTempView("Test")
-  val df1 = spark.sql("Select * from Test").show()
+  structuredData.createOrReplaceTempView("test")
+
+  spark.sql("Select * from test").show()
 
   val ssc = new StreamingContext(spark.sparkContext, Minutes(2))
 
